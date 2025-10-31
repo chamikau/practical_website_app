@@ -2,7 +2,7 @@
 
 **project-frontend**
 
-npm install
+npm install  
 npm start
 
 **project-backend**

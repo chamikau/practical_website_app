@@ -7,6 +7,6 @@ npm start
 
 **project-backend**
 
-composer install
-php artisan migrate --seed
+composer install  
+php artisan migrate --seed  
 php artisan serve

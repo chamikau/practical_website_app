@@ -1,0 +1,105 @@
+.dashboard {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.dashboard-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.user-info p {
+    margin: 4px 0;
+    color: #555;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.create-post-card,
+.posts-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.create-post-card h2,
+.posts-section h2 {
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.textarea-field {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+.posts-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.post-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.btn-logout:hover {
+    background-color: #d32f2f;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-logout {
+    background-color: #f44336;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto; /* push button to right */
+}

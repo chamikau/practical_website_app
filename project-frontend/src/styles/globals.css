@@ -1,0 +1,39 @@
+/* Global Styles */
+:root {
+    --brand-color: #1e90ff;
+    --brand-color-dark: #0d6efd;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgba(221, 241, 238, 0.7);
+}
+
+/* Example usage of brand color */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--brand-color);
+}
+
+a {
+    color: var(--brand-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--brand-color-dark);
+}
+
+/* Buttons */
+button {
+    background-color: var(--brand-color);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--brand-color-dark);
+}

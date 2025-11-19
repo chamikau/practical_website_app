@@ -2,42 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Website;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Application\Websites\WebsiteRepository;
+use App\Http\Requests\WebSiteRequest;
+use App\Http\Resources\WebSiteResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class WebSiteController extends Controller
 {
+    public function __construct(private WebsiteRepository $repository) {}
 
     /**
      * Display a listing of the resource.
-     *
-     * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(): AnonymousResourceCollection
     {
-        try {
-            return response()->json(Website::all());
-        } catch (\Exception $e) {
-            return response()->json(['erafasror' => $e->getMessage()], 500);
-        }
+        return WebsiteResource::collection(
+            $this->repository->all()
+        );
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(WebSiteRequest $request): WebSiteResource
     {
-        $data = $request->validate([
-            'name' => 'required|string',
-            'slug' => 'required|url',
-        ]);
+        $website = $this->repository->create($request->validated());
 
-        $website = Website::create($data);
-
-        return response()->json($website, 201);
+        return new WebsiteResource($website);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Website;
-use Illuminate\Support\Facades\DB;
+use App\Domain\Websites\Models\Website;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class RegisterAndSubscribeTest extends TestCase

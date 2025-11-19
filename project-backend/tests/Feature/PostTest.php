@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\Subscriber;
-use App\Models\Website;
+use App\Domain\Subscribers\Models\Subscriber;
+use App\Domain\Websites\Models\Website;
+use App\Jobs\SendPostToSubscribers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
-use App\Jobs\SendPostToSubscribers;
+use Tests\TestCase;
 
 class PostTest extends TestCase
 {

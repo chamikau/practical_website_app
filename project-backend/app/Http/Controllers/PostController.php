@@ -2,60 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Posts\PostRepository;
+use App\Application\Websites\WebsiteRepository;
+use App\Http\Requests\PostRequest;
+use App\Http\Resources\PostResource;
+use App\Http\Resources\WebsiteResource;
 use App\Jobs\SendPostToSubscribers;
-use App\Models\Post;
-use App\Models\Website;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class PostController extends Controller
 {
+    public function __construct(
+        private PostRepository $postRepository,
+        private WebsiteRepository $websiteRepository
+    ) {}
+
     /**
      * Display all posts for a specific website
      */
-    public function show($websiteId): JsonResponse
+    public function show(int $websiteId): JsonResponse
     {
-        $website = Website::findOrFail($websiteId);
-
-        $posts = Post::where('website_id', $website->id)
-            ->with('website')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $website = $this->websiteRepository->find($websiteId);
+        $posts = $this->postRepository->getByWebsite($websiteId);
 
         return response()->json([
-            'website' => $website,
-            'posts' => $posts
+            'website' => new WebsiteResource($website),
+            'posts'   => PostResource::collection($posts),
         ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created post.
      */
-    public function store(Request $request): JsonResponse
+    public function store(PostRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'website_id' => 'required|exists:websites,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
-
-
-        $hash = hash('sha256', $data['title'].'|'.$data['description']);
+        $data = $request->validated();
+        $data['content_hash'] = hash('sha256', $data['title'].'|'.$data['description']);
 
         try {
-            $post = Post::create([
-                'website_id' => $data['website_id'],
-                'title' => $data['title'],
-                'description' => $data['description'],
-                'content_hash' => $hash,
-            ]);
-
-        } catch (\Illuminate\Database\QueryException $e) {
+            $post = $this->postRepository->create($data);
+        } catch (QueryException $e) {
             return response()->json(['message' => 'Duplicate post'], 409);
         }
 
         SendPostToSubscribers::dispatch($post);
 
-        return response()->json(['message' => 'Post created', 'post' => $post], 201);
+        return response()->json([
+            'message' => 'Post created',
+            'post'    => new PostResource($post),
+        ], 201);
     }
 }

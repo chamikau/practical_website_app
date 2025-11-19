@@ -21,12 +21,24 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register-subscribe', [UserController::class, 'registerAndSubscribe']);
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::post('/websites/{website}/posts',[PostController::class,'store']);
-Route::get('/websites/{website}/get-posts',[PostController::class,'show']);
+/*
+|--------------------------------------------------------------------------
+| Websites
+|--------------------------------------------------------------------------
+*/
+Route::prefix('websites')->group(function () {
+    Route::get('/', [WebSiteController::class, 'index']);
+    Route::post('/', [WebSiteController::class, 'store']);
+    Route::get('{website}/get-posts', [PostController::class, 'show']);
+    Route::post('{website}/posts', [PostController::class, 'store']);
+});
 
-Route::get('websites', [WebSiteController::class, 'index']);
-Route::post('/websites', [WebSiteController::class, 'store']);
-
-Route::get('/subscriber/{subscriber_id}/get-websites', [SubscriberController::class, 'show']);
-Route::post('subscribers', [SubscriberController::class, 'store']);
-
+/*
+|--------------------------------------------------------------------------
+| Subscribers
+|--------------------------------------------------------------------------
+*/
+Route::prefix('subscriber')->group(function () {
+    Route::post('/', [SubscriberController::class, 'store']);
+    Route::get('{subscriber_id}/get-websites', [SubscriberController::class, 'show']);
+});

@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Post;
+use App\Domain\Posts\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;

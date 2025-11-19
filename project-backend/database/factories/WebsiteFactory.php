@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Domain\Websites\Models\Website; // Your model
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Website>
+ * @extends Factory<Website>
  */
 class WebsiteFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    // Explicitly bind the factory to your model
+    protected $model = Website::class;
+
     public function definition()
     {
         return [

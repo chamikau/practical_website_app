@@ -2,38 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subscriber;
+use App\Application\Subscribers\SubscriberRepository;
+use App\Http\Requests\SubscriberRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SubscriberController extends Controller
 {
+    public function __construct(
+        private SubscriberRepository $subscriberRepository,
+    ) {}
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created subscriber.
      */
-    public function store(Request $request): JsonResponse
+    public function store(SubscriberRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'email' => 'required|email',
-            'website_ids' => 'required|array|min:1',
-            'website_ids.*' => 'exists:websites,id'
-        ]);
+        $data = $request->validated();
 
-        $subscriber = Subscriber::firstOrCreate(['email' => $data['email']], ['name' => $data['name'] ?? null]);
-        $subscriber->websites()->syncWithoutDetaching($data['website_ids']);
+        // Check if subscriber exists or create
+        $subscriber = $this->subscriberRepository->findByEmail($data['email'])
+            ?? $this->subscriberRepository->create([
+                'email' => $data['email'],
+                'name' => $data['name'] ?? null,
+            ]);
 
-        return response()->json(['message' => 'Subscribed', 'subscriber' => $subscriber->load('websites')], 201);
+        // Attach website relations
+        $this->subscriberRepository->attachWebsites($subscriber, $data['website_ids']);
+
+        return response()->json([
+            'message' => 'Subscribed successfully',
+            'subscriber' => $subscriber->load('websites'),
+        ], 201);
     }
 
     /**
-     * show a function.
+     * Show a subscriber with its websites.
      */
-    public function show($subscriber_id): JsonResponse
+    public function show(int $subscriberId): JsonResponse
     {
-        $subscriber = Subscriber::with('websites')
-        ->find($subscriber_id);
+        $subscriber = $this->subscriberRepository->findByIdWithWebsites($subscriberId);
 
         if (!$subscriber) {
             return response()->json(['message' => 'Subscriber not found'], 404);

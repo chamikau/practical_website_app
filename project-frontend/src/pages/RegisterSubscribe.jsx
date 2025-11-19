@@ -21,7 +21,7 @@ const RegisterSubscribe = () => {
         const loadWebsites = async () => {
             try {
                 const response = await axios.get("http://localhost:8000/api/websites");
-                setWebsites(response.data);
+                setWebsites(response.data.data);
             } catch (error) {
                 console.error("Error loading websites:", error);
             } finally {

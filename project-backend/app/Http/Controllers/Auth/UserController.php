@@ -2,48 +2,45 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Application\Subscribers\SubscriberRepository;
+use App\Application\Users\UserRepository;
 use App\Http\Controllers\Controller;
-use App\Models\Subscriber;
-use App\Models\User;
+use App\Http\Requests\Auth\RegisterSubscribeRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private UserRepository $userRepository,
+        private SubscriberRepository $subscriberRepository
+    ) {}
 
-    public function registerAndSubscribe(Request $request): JsonResponse
+    /**
+     * Register a new user and subscribe to websites.
+     */
+    public function registerAndSubscribe(RegisterSubscribeRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-            'website_ids' => 'required|array|min:1',
-            'website_ids.*' => 'exists:websites,id',
+        $data = $request->validated();
+
+        // Create the user
+        $user = $this->userRepository->create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $subscriber = Subscriber::firstOrCreate(
+        // Create or get subscriber
+        $subscriber = $this->subscriberRepository->firstOrCreate(
             ['email' => $user->email],
             ['name' => $user->name]
         );
 
-        $subscriber->websites()->syncWithoutDetaching($request->website_ids);
+        $this->subscriberRepository->syncWebsites($subscriber, $data['website_ids']);
 
         return response()->json([
             'message' => 'User registered and subscribed successfully',
             'user' => $user,
         ], 201);
     }
-
 }

@@ -1,0 +1,250 @@
+/* 🌟 Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: rgba(221, 241, 238, 0.7);
+}
+
+/* 🎫 Auth Page (Register & Login) */
+.auth-page, .login-page, .register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-card, .login-card, .register-card {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.auth-card h1, .login-card h1, .register-card h1 {
+    margin-bottom: 10px;
+    font-size: 26px;
+}
+
+/* 🧾 Form Fields */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.form-select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    outline: none;
+    background-color: #fff;
+}
+
+.form-group input:focus,
+.form-select:focus {
+    border-color: #333;
+}
+
+.form-select[multiple] {
+    height: 120px;
+    overflow-y: auto;
+}
+
+/* 🔘 Buttons */
+.submit-btn, .btn-submit, .add-post-btn, .btn-logout {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #555;
+}
+
+.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+.add-post-btn {
+    background-color: #0077b6;
+    color: #fff;
+    padding: 8px 15px;
+}
+
+.add-post-btn:hover {
+    background-color: #023e8a;
+}
+
+.btn-logout {
+    background-color: #f44336;
+    color: white;
+    padding: 6px 14px;
+    margin-left: auto;
+}
+
+.btn-logout:hover {
+    background-color: #d32f2f;
+}
+
+/* 🔗 Links */
+.auth-link, .login-link, .register-link {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.auth-link a, .login-link a, .register-link a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-link a:hover, .login-link a:hover, .register-link a:hover {
+    text-decoration: underline;
+}
+
+/* 🏠 Dashboard */
+.dashboard {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.dashboard-title {
+    font-size: 28px;
+    color: #333;
+    flex: 1;
+    text-align: center;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.user-info {
+    text-align: left; /* Align user info to left */
+}
+
+.user-info p {
+    margin: 4px 0;
+    color: #555;
+    line-height: 1.2;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.create-post-card,
+.posts-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.create-post-card h2,
+.posts-section h2 {
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.textarea-field {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.posts-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.post-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .auth-card, .login-card, .register-card {
+        width: 95%;
+        padding: 20px;
+    }
+    .dashboard-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .header-right {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    .dashboard-title {
+        margin-bottom: 10px;
+    }
+}

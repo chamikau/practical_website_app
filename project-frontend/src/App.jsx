@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import RegisterSubscribe from "./pages/RegisterSubscribe";
-import Dashboard from "./pages/Dashboard";
-import "./styles/globals.css";
+import Login from "./pages/Auth/Login";
+import RegisterSubscribe from "./pages/Auth/RegisterSubscribe";
+import DashboardPage from "./pages/Dashboard/DashboardPage";
+import "./assets/style.css";
 
 export default function App() {
   return (
@@ -10,7 +10,7 @@ export default function App() {
         <Routes>
             <Route path="/" element={<RegisterSubscribe />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </BrowserRouter>
   );

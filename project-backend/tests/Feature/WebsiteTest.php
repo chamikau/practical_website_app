@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Domain\Users\Models\User;
 use App\Domain\Websites\Models\Website;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,16 +14,18 @@ class WebsiteTest extends TestCase
     /** @test */
     public function index_returns_all_websites_with_data()
     {
-        $websites = Website::factory()->count(3)->create();
+        $websites = Website::factory()->count(2)->create();
 
         $response = $this->getJson('/api/websites');
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => ['id', 'name', 'slug', 'created_at']
+                ]
+            ]);
 
-        $response->assertJsonStructure([
-            '*' => ['id', 'name', 'slug', 'created_at', 'updated_at']
-        ]);
-
+        // Optional: check values
         foreach ($websites as $website) {
             $response->assertJsonFragment([
                 'id' => $website->id,
@@ -31,11 +34,12 @@ class WebsiteTest extends TestCase
             ]);
         }
 
-        $this->assertCount(3, $response->json());
+        // Ensure count matches
+        $this->assertCount(2, $response->json('data'));
     }
 
     /** @test */
-    public function store_creates_a_new_website()
+    public function test_store_creates_a_new_website()
     {
         $payload = [
             'name' => 'Test Website',

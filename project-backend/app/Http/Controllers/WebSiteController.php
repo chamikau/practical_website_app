@@ -24,10 +24,12 @@ class WebSiteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(WebSiteRequest $request): WebSiteResource
+    public function store(WebSiteRequest $request)
     {
         $website = $this->repository->create($request->validated());
 
-        return new WebsiteResource($website);
+        return (new WebsiteResource($website))
+            ->response()
+            ->setStatusCode(201);
     }
 }

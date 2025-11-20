@@ -3,6 +3,7 @@
 namespace App\Domain\Subscribers\Models;
 use App\Domain\Posts\Models\Post;
 use App\Domain\Websites\Models\Website;
+use Database\Factories\SubscriberFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,6 +13,11 @@ class Subscriber extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'email'];
+
+    protected static function newFactory()
+    {
+        return SubscriberFactory::new();
+    }
 
     /**
      * @return BelongsToMany

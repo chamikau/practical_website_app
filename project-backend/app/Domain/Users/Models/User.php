@@ -3,6 +3,7 @@
 namespace App\Domain\Users\Models;
 
 use App\Domain\Subscribers\Models\Subscriber;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,6 +51,10 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
     /**
      * @return HasOne
      */

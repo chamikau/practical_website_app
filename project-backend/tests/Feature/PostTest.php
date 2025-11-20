@@ -16,10 +16,8 @@ class PostTest extends TestCase
     /** @test */
     public function a_post_can_be_created_and_dispatches_job_to_subscribers()
     {
-        // Prevent jobs from actually running
         Queue::fake();
 
-        // Create website and subscriber
         $website = Website::factory()->create();
         $subscriber = Subscriber::factory()->create();
         $website->subscribers()->attach($subscriber);
@@ -34,7 +32,6 @@ class PostTest extends TestCase
         // Call API
         $response = $this->postJson("/api/websites/{$website->id}/posts", $postData);
 
-        // Assert JSON structure and status
         $response->assertStatus(201)
             ->assertJsonStructure([
                 'message',
@@ -49,14 +46,12 @@ class PostTest extends TestCase
                 ],
             ]);
 
-        // Assert post exists in database
         $this->assertDatabaseHas('posts', [
             'title' => $postData['title'],
             'description' => $postData['description'],
             'website_id' => $website->id
         ]);
 
-        // Assert the job was dispatched
         Queue::assertPushed(SendPostToSubscribers::class, function ($job) use ($postData) {
             return $job->post->title === $postData['title'];
         });

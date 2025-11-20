@@ -22,7 +22,7 @@ const LoginPage = () => {
 
             if (data) localStorage.setItem("user_data", JSON.stringify(data));
 
-            alert("Auth successful!");
+            alert("Login successful!");
             navigate("/dashboard");
         } catch (error) {
             console.error(error);

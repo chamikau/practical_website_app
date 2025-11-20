@@ -22,8 +22,6 @@ class LoginController extends Controller
 
         $user = Auth::user();
 
-        // $token = $user->createToken('api-token')->plainTextToken;
-
         return response()->json([
             'status' => 'success',
             'user' => [
@@ -31,7 +29,6 @@ class LoginController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
             ],
-            // 'token' => $token
         ]);
     }
 }

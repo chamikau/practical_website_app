@@ -26,7 +26,6 @@ class SubscriberController extends Controller
                 'name' => $data['name'] ?? null,
             ]);
 
-        // Attach website relations
         $this->subscriberRepository->attachWebsites($subscriber, $data['website_ids']);
 
         return response()->json([

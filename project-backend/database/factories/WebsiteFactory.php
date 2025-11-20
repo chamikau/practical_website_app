@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class WebsiteFactory extends Factory
 {
-    // Explicitly bind the factory to your model
     protected $model = Website::class;
 
     public function definition()

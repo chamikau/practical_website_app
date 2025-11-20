@@ -25,7 +25,6 @@ class WebsiteTest extends TestCase
                 ]
             ]);
 
-        // Optional: check values
         foreach ($websites as $website) {
             $response->assertJsonFragment([
                 'id' => $website->id,
@@ -34,7 +33,6 @@ class WebsiteTest extends TestCase
             ]);
         }
 
-        // Ensure count matches
         $this->assertCount(2, $response->json('data'));
     }
 

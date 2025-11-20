@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Domain\Users\Models\User;
 use App\Domain\Websites\Models\Website;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -69,6 +68,19 @@ class WebsiteTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('name');
+    }
+
+    /** @test */
+    public function store_fails_if_slug_is_missing()
+    {
+        $payload = [
+            'name' => 'Website Without Slug',
+        ];
+
+        $response = $this->postJson('/api/websites', $payload);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('slug');
     }
 
 }

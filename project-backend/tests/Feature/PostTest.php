@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Domain\Subscribers\Models\Subscriber;
 use App\Domain\Websites\Models\Website;
+use App\Domain\Posts\Models\Post;
 use App\Jobs\SendPostToSubscribers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -22,14 +24,12 @@ class PostTest extends TestCase
         $subscriber = Subscriber::factory()->create();
         $website->subscribers()->attach($subscriber);
 
-        // Post data
         $postData = [
             'website_id' => $website->id,
             'title' => 'Sample Post',
             'description' => 'This is a test post description.',
         ];
 
-        // Call API
         $response = $this->postJson("/api/websites/{$website->id}/posts", $postData);
 
         $response->assertStatus(201)
@@ -55,5 +55,39 @@ class PostTest extends TestCase
         Queue::assertPushed(SendPostToSubscribers::class, function ($job) use ($postData) {
             return $job->post->title === $postData['title'];
         });
+    }
+
+    /** @test */
+    public function store_returns_409_if_duplicate_post_is_created()
+    {
+        $website = Website::factory()->create();
+
+        $postData = [
+            'website_id' => $website->id,
+            'title' => 'Duplicate Post',
+            'description' => 'Duplicate description',
+        ];
+
+        // First creation
+        $this->postJson("/api/websites/{$website->id}/posts", $postData);
+
+        // Attempt duplicate
+        $response = $this->postJson("/api/websites/{$website->id}/posts", $postData);
+
+        $response->assertStatus(409)
+            ->assertJson([
+                'message' => 'Duplicate post'
+            ]);
+    }
+
+    /** @test */
+    public function store_fails_validation_if_fields_missing()
+    {
+        $website = Website::factory()->create();
+
+        $response = $this->postJson("/api/websites/{$website->id}/posts", []);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['title', 'description', 'website_id']);
     }
 }
